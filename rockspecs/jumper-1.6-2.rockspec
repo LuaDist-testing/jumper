@@ -1,17 +1,9 @@
--- This file was automatically generated for the LuaDist project.
-
 package = "jumper"
 version = "1.6-2"
--- LuaDist source
 source = {
-  tag = "1.6-2",
-  url = "git://github.com/LuaDist-testing/jumper.git"
+   url = "https://github.com/Yonaba/Jumper/archive/jumper-1.6-2.tar.gz",
+   dir = "Jumper-jumper-1.6-2"
 }
--- Original source
--- source = {
---    url = "https://github.com/Yonaba/Jumper/archive/jumper-1.6-2.tar.gz",
---    dir = "Jumper-jumper-1.6-2"
--- }
 description = {
    summary = "Fast and easy-to-use pathfinding library for 2D grid-bases games",
    detailed = [[
@@ -20,7 +12,6 @@ description = {
 	  which makes it very friendly and easy to use.
    ]],
    homepage = "http://github.com/Yonaba/Jumper",
-   maintainer = "Roland Yonaba <roland.yonaba@gmail.com>",
    license = "MIT <http://www.opensource.org/licenses/mit-license.php>"
 }
 dependencies = {
