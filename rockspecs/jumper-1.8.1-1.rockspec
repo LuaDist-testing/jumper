@@ -1,22 +1,14 @@
--- This file was automatically generated for the LuaDist project.
-
 package = "jumper"
-version = "1.8.0-1"
--- LuaDist source
+version = "1.8.1-1"
 source = {
-  tag = "1.8.0-1",
-  url = "git://github.com/LuaDist-testing/jumper.git"
+   url = "https://github.com/Yonaba/Jumper/archive/jumper-1.8.1-1.tar.gz",
+   dir = "Jumper-jumper-1.8.1-1"
 }
--- Original source
--- source = {
---    url = "https://github.com/Yonaba/Jumper/archive/jumper-1.8.0.tar.gz",
---    dir = "Jumper-jumper-1.8.0"
--- }
 description = {
    summary = "Fast and easy-to-use pathfinding library for grid-based games",
    detailed = [[
       Jumper is a pathfinding library designed for grid-based games.
-      It aims to be fast and lightweight. It also features wide range of search algoeithms, 
+      It aims to be fast and lightweight. It also features wide range of search algorithms, 
 	  a clean public interface with chaining features  which makes it very friendly and easy to use.
    ]],
    homepage = "http://github.com/Yonaba/Jumper",
@@ -41,5 +33,5 @@ build = {
       ["jumper.search.bfs"] = "jumper/search/bfs.lua",
       ["jumper.search.dfs"] = "jumper/search/dfs.lua",
    },
-   copy_directories = {"docs"}
+   copy_directories = {"docs","specs"}
 }

@@ -15,15 +15,13 @@
 
 if (...) then
 
+	local assert = assert
+	
   --- Internal `node` Class
   -- @class table
   -- @name node
   -- @field x the x-coordinate of the node on the collision map
   -- @field y the y-coordinate of the node on the collision map
-  -- @field g the G-cost of the node (exists only during a path search)
-  -- @field f the F-cost of the node (exists only during a path search)
-  -- @field h the F-cost of the node (exists only during a path search)
-  -- @field parent a reference to the parent of the current node, used for backtracking upon a path search completion (exists only during a path search).
   local Node = {}
   Node.__index = Node
 
@@ -41,7 +39,11 @@ if (...) then
   -- Will be used to sort a collection of nodes in a binary heap on the basis of their F-cost
   function Node.__lt(A,B) return (A.f < B.f) end
 
-  return Node
+  return setmetatable(Node,
+		{__call = function(self,...) 
+			return Node:new(...) 
+		end}
+	)
 end
 
 

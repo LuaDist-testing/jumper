@@ -1,6 +1,8 @@
 Jumper
 ======
 
+[![Build Status](http://travis-ci.org/Yonaba/Jumper.png)](http://travis-ci.org/Yonaba/Jumper)
+
 __Jumper__ is a pathfinding library designed for grid-based games. It aims to be __fast__ and __lightweight__.
 It features a wide range of search algorithms, built within a clean interface with 
 chaining features which makes it __very friendly and easy to use__.<br/>
@@ -10,15 +12,16 @@ __Jumper__ is written in pure [Lua][]. Thus, it is not __framework-related__ and
 <center><img src="http://ompldr.org/vZjltNQ" alt="" width="500" height="391" border="0" /></center>
 
 ###Contents
-* [Installation](https://github.com/Yonaba/Jumper#installation)
-* [Example of Use](https://github.com/Yonaba/Jumper#example-of-use)
-* [API & Docs](https://github.com/Yonaba/Jumper#api--docs)
-* [Usage](https://github.com/Yonaba/Jumper#usage)
-* [The Grid](https://github.com/Yonaba/Jumper#the-grid)
-* [Handling paths](https://github.com/Yonaba/Jumper#handling-paths)
-* [Chaining](https://github.com/Yonaba/Jumper#chaining)
-* [Credits and Thanks](https://github.com/Yonaba/Jumper#credits-and-thanks)
-* [License](https://github.com/Yonaba/Jumper#license)
+* [Installation](http://github.com/Yonaba/Jumper#installation)
+* [Example of Use](http://github.com/Yonaba/Jumper#example-of-use)
+* [API & Docs](http://github.com/Yonaba/Jumper#api--docs)
+* [Usage](http://github.com/Yonaba/Jumper#usage)
+* [The Grid](http://github.com/Yonaba/Jumper#the-grid)
+* [Handling paths](http://github.com/Yonaba/Jumper#handling-paths)
+* [Chaining](http://github.com/Yonaba/Jumper#chaining)
+* [Specs](http://github.com/Yonaba/Jumper#specs)
+* [Credits and Thanks](http://github.com/Yonaba/Jumper#credits-and-thanks)
+* [License](http://github.com/Yonaba/Jumper#license)
 
 ##Installation
 The current repository can be retrieved locally on your computer via:
@@ -29,8 +32,10 @@ git clone git://github.com/Yonaba/Jumper.git
 ````
 
 ###Download (latest)
-* __Archive:__ [zip](https://github.com/Yonaba/Jumper/zipball/master) 
-* __Tarball:__ [tarball](https://github.com/Yonaba/Jumper/tarball/master)
+* __Development release__: [zip](http://github.com/Yonaba/Jumper/zipball/master) | [tar.gz](http://github.com/Yonaba/Jumper/tarball/master)
+* __Stable release (1.8.1)__: [zip](http://github.com/Yonaba/Jumper/archive/jumper-1.8.1-1.zip) | [tar.gz](http://github.com/Yonaba/Jumper/archive/jumper-1.8.1-1.tar.gz)
+* __All releases__: [tags](http://github.com/Yonaba/Jumper/tags)
+
 
 ###LuaRocks
 ```bash
@@ -49,10 +54,10 @@ Here is a simple example explaining how to use Jumper:
 -- Usage Example
 -- First, set a collision map
 local map = {
-	{0,1,0,1,0 },
-	{0,1,0,1,0 },
-	{0,1,1,1,0 },
-	{0,0,0,0,0 },
+	{0,1,0,1,0},
+	{0,1,0,1,0},
+	{0,1,1,1,0},
+	{0,0,0,0,0},
 }
 -- Value for walkable tiles
 local walkable = 0
@@ -64,7 +69,7 @@ local Pathfinder = require ("jumper.pathfinder") -- The pathfinder lass
 -- Creates a grid object
 local grid = Grid(map) 
 -- Creates a pathfinder object using Jump Point Search
-local myFinder = Pathfinder('JPS', grid, walkable) 
+local myFinder = Pathfinder(grid, 'JPS', walkable) 
 
 -- Define start and goal locations coordinates
 local startx, starty = 1,1
@@ -89,19 +94,19 @@ end
 --> Step: 6 - x: 5 - y: 1
 ````
 
-Find some other examples of use for __Jumper__, made with various Lua-based frameworks and game engines in this separated repository: [Jumper-Examples](https://github.com/Yonaba/Jumper-Examples)
+Find some other examples of use for __Jumper__, made with various Lua-based frameworks and game engines in this separated repository: [Jumper-Examples](http://github.com/Yonaba/Jumper-Examples)
 
 ##API & Docs##
-Find a complete documentation and API description online here: [docs](https://yonaba.github.com/Jumper)
+Find a complete documentation and API description online here: [docs](http://yonaba.github.com/Jumper)
 
 ##Usage##
 ###Adding Jumper to your project###
-Copy the contents of the folder named [jumper](https://github.com/Yonaba/Jumper/blob/master/jumper) and its contents and place it inside your projet. Use *require* function to import any module of the library.
+Copy the contents of the folder named [jumper](http://github.com/Yonaba/Jumper/blob/master/jumper) and its contents and place it inside your projet. Use *require* function to import any module of the library.
 
 ###Setting your collision map
 The collision map is a regular Lua table where each cell holds a value, representing whether or not the corresponding tile in the 2D world is walkable
 or not.<br/>
-__Caution__ : *All cells in your collision maps must be indexed with consecutive integers*.
+__Caution__ : *All cells in your collision maps must be indexed with consecutive integers* __starting at 0__ or __1__.
 
 ```lua
 local map = {
@@ -147,31 +152,32 @@ xxxxxxxxxxxxxx
 
 ###Initializing Jumper###
 Once your collision map is set, you have to init a `grid` object.
-This is fairly simple, you just have to require the [grid](https://github.com/Yonaba/Jumper/blob/master/jumper/grid.lua) module, and then pass it two arguments.
+This is fairly simple, you just have to require the [grid](http://github.com/Yonaba/Jumper/blob/master/jumper/grid.lua) module, and then pass it two arguments.
 
 ```lua
 local Grid = require 'jumper.grid'
 local grid = Grid(map,processOnDemand)
 ```
 
-Only the first arg `map` is __mandatory__. It refers to the [collision map](https://github.com/Yonaba/Jumper#setting-your-collision-map) previously defined.
-The second arg `processOnDemand` is optional. See [here](https://github.com/Yonaba/Jumper#the-grid-object) for more details.<br/>
+Only the first arg `map` is __mandatory__. It refers to the [collision map](http://github.com/Yonaba/Jumper#setting-your-collision-map) previously defined.
+The second arg `processOnDemand` is optional. See [here](http://github.com/Yonaba/Jumper#the-grid-object) for more details.<br/>
  
 Next, to init a `pathfinder`, you have specify what value in this collision map matches a __walkable__ tile. If you choose for instance *0* for *walkable tiles*, 
 and you happen to assign that value to the `pathfinder`, it will consider __any other value__ as *non walkable*.<br/>
-To initialize a `pathfinder`, you will have to require the [pathfinder](https://github.com/Yonaba/Jumper/blob/master/jumper/pathfinder.lua) module, and then pass _it _three arguments__.
+To initialize a `pathfinder`, you will have to require the [pathfinder](http://github.com/Yonaba/Jumper/blob/master/jumper/pathfinder.lua) module, and then pass it __three arguments__.
 
 ```lua
-local myFinder = Pathfinder(finderName, grid, walkable)
+local myFinder = Pathfinder(grid, finderName, walkable)
 ```
 
-The first and second arguments are __mandatory__. The last one is optional.
-* `finderName` refers to the search algorithm to be used by the pathfinder. See [finders](https://github.com/Yonaba/Jumper#finders) for more details.
+The first arg is __mandatory__. The others are optional.
 * `grid` refers to the grid object.
+* `finderName` refers to the search algorithm to be used by the pathfinder. See [finders](http://github.com/Yonaba/Jumper#finders) for more details.
 * `walkable` (optional) refers to the value representing walkable tiles. If not given, any tile will be considered *fully walkable* on the grid.
 
-You might want to have multiple values designing a walkable tile. 
+You might want to have __multiple values designing a walkable tile__. 
 In this case, argument <tt>walkable</tt> can be a function, prototyped as <tt>f(value)</tt>, returning a boolean.
+
 ```lua
 local map = {
   {0,0,0,0,0,0},
@@ -188,21 +194,23 @@ end
 
 local Grid = require ('jumper.grid')
 local Pathfinder = require('jumper.pathfinder')
-local myFinder = Pathfinder('ASTAR', Grid(map), walkable)
+local myFinder = Pathfinder(Grid(map), 'ASTAR', walkable)
 ```
-
 
 ###Finders
 Jumper uses search algorithm to perform a path search from one location to another.
 Actually, there are dozens of search algorithms, each one having its strengths and weaknesses, and this library implements some of these algorithms.
-As of version 1.8.0, Jumper implements [A-star](http://en.wikipedia.org/wiki/A-star), [Dijkstra](http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm), 
-[Breadth-First search](http://en.wikipedia.org/wiki/Breadth-first_search), [Depth First search](http://en.wikipedia.org/wiki/Depth-first_search) 
-and [Jump Point Search](http://harablog.wordpress.com/2011/09/07/jump-point-search/) (which is one of the fastest available for grid maps).
+[Since v1.8.0](http://github.com/Yonaba/Jumper/blob/master/version_history.md#180-01262013), Jumper implements a wide range of search algorithms: 
+* [A-star](http://en.wikipedia.org/wiki/A-star)
+* [Dijkstra](http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+* [Breadth-First search](http://en.wikipedia.org/wiki/Breadth-first_search)
+* [Depth First search](http://en.wikipedia.org/wiki/Depth-first_search)
+* [Jump Point Search](http://harablog.wordpress.com/2011/09/07/jump-point-search/) (which is one of the fastest available for grid maps).
 
 ```lua
 local Grid = require ('jumper.grid')
 local Pathfinder = require ('jumper.pathfinder')
-local myFinder = Pathfinder('JPS',Grid(map),0)
+local myFinder = Pathfinder(Grid(map), 'JPS', 0)
 print(myFinder:getFinder()) --> 'JPS'
 ````
 
@@ -235,7 +243,7 @@ As an example :
 ```lua
 local Grid = require ('jumper.grid')
 local Pathfinder = require('jumper.pathfinder')
-local myFinder = Pathfinder('ASTAR',Grid(map))
+local myFinder = Pathfinder(Grid(map),'ASTAR')
 myFinder:setHeuristic('CARDINTCARD')
 ```
 See [docs](http://yonaba.github.com/Jumper/modules/jumper.core.heuristics.html) for more details on how to deal with distance heuristics.
@@ -254,7 +262,7 @@ local function myDistance(dx, dy)
 end
 local Grid = require ('jumper.grid')
 local Pathfinder = require('jumper.pathfinder')
-local myFinder = Pathfinder('ASTAR',Grid(map))
+local myFinder = Pathfinder(Grid(map), 'ASTAR')
 myFinder:setHeuristic(myDistance)
 ````
 
@@ -283,7 +291,7 @@ local Pathfinder = require 'jumper.pathfinder'
 local processOnDemand = true
 local grid = Grid(map, processOnDemand)
 local walkable = 0
-local myFinder = Pathfinder('DFS', grid, walkable)
+local myFinder = Pathfinder(grid, 'DFS', walkable)
 ````
 
 In this case, the internal grid will consume __0 kB (no memory) at initialization__. But later on, this is likely to grow, as __Jumper__ will automatically create and keep caching new nodes __on purpose__.
@@ -342,6 +350,38 @@ path:filter() -- Returns {{x = 1,y = 1},{x = 1,y = 5}}
 
 See [`path` class documentation](http://yonaba.github.com/Jumper/modules/jumper.core.path.html) for more details.
 
+### Tunnelling
+Normally, the pathfinder should returns paths avoiding walls, obstacles. But, you can also authorize it to `tunnel through` walls, 
+that is, to cross them deading diagonally.
+
+Let's set an example:
+
+```
+local map = {
+ {1,1,0},
+ {1,0,1},
+ {0,1,1},
+}
+```
+`0` refers to walkable tiles, and `1` for unwalkable tiles.
+Let's assume we want to move from location `[x: 1, y:3]` to `[x: 3, y:1]`. Calling `getPath()` would fail, because it can't normally cross
+from `[x: 1, y:3]` to `[x: 2, y:2]` (because tiles `[x: 1, y:2]` and `[x: 2, y:3]` are unwalkable), nor from `[x: 2, y:2]` to `[x: 3, y:1]` (because tiles `[x: 2, y:1]` and `[x: 3, y:2]` are unwalkable).
+
+[Passing a fifth argument](http://yonaba.github.com/Jumper/modules/jumper.pathfinder.html#pathfinder:getPath) `tunnel` will override this behaviour, and cause the pathfinder to *tunnel though* those walls.
+
+```
+local map = {
+ {1,1,0},
+ {1,0,1},
+ {0,1,1},
+}
+local tunnel = true
+local path = myFinder:getPath(1,3,3,1,tunnel)
+print(path~=nil) --> true
+```
+
+A __side note__ though, that feature works perfectly with all the available [finders](http://github.com/Yonaba/Jumper#finders) built-in Jumper, __except Jump Point Search algorithm__, as of now.
+
 ##Chaining##
 All setters can be chained.<br/>
 This is convenient if you need to __quickly reconfigure__ the `pathfinder` object.
@@ -357,7 +397,7 @@ local Grid = require ('jumper.grid')
 local Pathfinder = require ('jumper.pathfinder')
 
 local grid = Grid(map)
-local myFinder = Pathfinder('BFS', grid, 0)
+local myFinder = Pathfinder(grid, 'BFS', 0)
 -- some code
 -- calls the finder, reconfigures it and requests a new path
 local path,length = myFinder:setFinder('ASTAR')
@@ -367,48 +407,56 @@ local path,length = myFinder:setFinder('ASTAR')
 -- That's it!				   
 ```
 
+##Specs
+Specs tests have been included.<br/>
+You can run them using [Telescope](http://github.com/norman/telescope) with the following command 
+from the [root](http://github.com/Yonaba/Jumper/blob/master/jumper) folder:
+
+```
+tsc -f specs/*
+```
+
 ##Credits and Thanks##
 
 * [Daniel Harabor][], [Alban Grastien][] : for [the algorithm and the technical papers][].<br/>
 * [XueXiao Xu][], [Nathan Witmer][]: for their [JavaScript port][] <br/>
-* [Steve Donovan](https://github.com/stevedonovan): for the documentation generator tool [LDoc](https://github.com/stevedonovan/ldoc/).
+* [Steve Donovan](http://github.com/stevedonovan): for the awesome documentation generator tool [LDoc](http://github.com/stevedonovan/ldoc/).
+* [Srdjan Markovic](http://github.com/srdjan-m), who reported various bugs and feedbacks.
 
 ##License##
-
 This work is under [MIT-LICENSE][]<br/>
-Copyright (c) 2012-2013 Roland Yonaba
+Copyright (c) 2012-2013 Roland Yonaba.
 
-    Permission is hereby granted, free of charge, to any person obtaining a
-    copy of this software and associated documentation files (the
-    "Software"), to deal in the Software without restriction, including
-    without limitation the rights to use, copy, modify, merge, publish,
-    distribute, sublicense, and/or sell copies of the Software, and to
-    permit persons to whom the Software is furnished to do so, subject to
-    the following conditions:
-
-    The above copyright notice and this permission notice shall be included
-    in all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+> Permission is hereby granted, free of charge, to any person obtaining a copy<br/>
+> of this software and associated documentation files (the "Software"), to deal<br/>
+> in the Software without restriction, including without limitation the rights<br/>
+> to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<br/>
+> copies of the Software, and to permit persons to whom the Software is<br/>
+> furnished to do so, subject to the following conditions:<br/>
+><br/>
+> The above copyright notice and this permission notice shall be included in<br/>
+> all copies or substantial portions of the Software.<br/>
+><br/>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<br/>
+> IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<br/>
+> FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE<br/>
+> AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<br/>
+> LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<br/>
+> OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN<br/>
+> THE SOFTWARE.
 
 [Jump Point Search]: http://harablog.wordpress.com/2011/09/07/jump-point-search/
 [Lua]: http://lua.org
-[Löve]: https://love2d.org
-[Löve2d]: https://love2d.org
-[Löve 0.8.0 Framework]: https://love2d.org
+[Löve]: http://love2d.org
+[Löve2d]: http://love2d.org
+[Löve 0.8.0 Framework]: http://love2d.org
 [Dragon Age : Origins]: http://dragonage.bioware.com
 [Moving AI]: http://movingai.com
-[Nathan Witmer]: https://github.com/aniero
-[XueXiao Xu]: https://github.com/qiao
-[JavaScript port]: https://github.com/qiao/PathFinding.js
+[Nathan Witmer]: http://github.com/aniero
+[XueXiao Xu]: http://github.com/qiao
+[JavaScript port]: http://github.com/qiao/PathFinding.js
 [Alban Grastien]: http://www.grastien.net/ban/
 [Daniel Harabor]: http://users.cecs.anu.edu.au/~dharabor/home.html
 [the algorithm and the technical papers]: http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf
 [MIT-LICENSE]: http://www.opensource.org/licenses/mit-license.php
-[heuristics.lua]: https://github.com/Yonaba/Jumper/blob/master/Jumper/core/heuristics.lua
+[heuristics.lua]: http://github.com/Yonaba/Jumper/blob/master/Jumper/core/heuristics.lua

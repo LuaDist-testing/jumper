@@ -7,18 +7,18 @@
 -- @license <a href="http://www.opensource.org/licenses/mit-license.php">MIT</a>
 -- @module jumper.pathfinder
 
-local _VERSION = "1.8.0"
-local _RELEASEDATE = "01/26/2013"
+local _VERSION = "1.8.1"
+local _RELEASEDATE = "03/01/2013"
 
 --- @usage
 local usage = [[
 -- Usage Example
 -- First, set a collision map
 local map = {
-	{0,1,0,1,0 },
-	{0,1,0,1,0 },
-	{0,1,1,1,0 },
-	{0,0,0,0,0 },
+	{0,1,0,1,0},
+	{0,1,0,1,0},
+	{0,1,1,1,0},
+	{0,0,0,0,0},
 }
 -- Value for walkable tiles
 local walkable = 0
@@ -30,7 +30,7 @@ local Pathfinder = require ("jumper.pathfinder") -- The pathfinder lass
 -- Creates a grid object
 local grid = Grid(map)
 -- Creates a pathfinder object using Jump Point Search
-local myFinder = Pathfinder('JPS', grid, walkable)
+local myFinder = Pathfinder(grid, 'JPS', walkable)
 
 -- Define start and goal locations coordinates
 local startx, starty = 1,1
@@ -59,10 +59,20 @@ if (...) then
 
   -- Internalization
   local t_insert, t_remove = table.insert, table.remove
+	local floor = math.floor
   local pairs = pairs
   local assert = assert
   local setmetatable, getmetatable = setmetatable, getmetatable
-
+	
+	-- Type function ovverride, to support integers
+	local otype = type
+	local isInt = function(v) 
+		return otype(v) == 'number' and floor(v) == v and 'int' or nil 
+	end
+	local type = function(v)
+		return isInt(v) or otype(v)
+	end
+	
   -- Dependancies
   local _PATH = (...):gsub('%.pathfinder$','')
   local Heap      = require (_PATH .. '.core.bheap')
@@ -77,11 +87,11 @@ if (...) then
 
   -- Available search algorithms
   local Finders = {
-    ['ASTAR']    = require (_PATH .. '.search.astar'),
-    ['DIJKSTRA'] = require (_PATH .. '.search.dijkstra'),
-    ['BFS']      = require (_PATH .. '.search.bfs'),
-    ['DFS']      = require (_PATH .. '.search.dfs'),
-    ['JPS']      = require (_PATH .. '.search.jps'),
+    ['ASTAR']     = require (_PATH .. '.search.astar'),	
+    ['DIJKSTRA']  = require (_PATH .. '.search.dijkstra'),
+    ['BFS']       = require (_PATH .. '.search.bfs'),
+    ['DFS']       = require (_PATH .. '.search.dfs'),
+    ['JPS']       = require (_PATH .. '.search.jps'),
   }
 
   -- Collect keys in an array
@@ -124,7 +134,6 @@ if (...) then
         t_insert(path,1,node)
         node = node.parent
       else
-        reset()
         t_insert(path,1,startNode)
         return path
       end
@@ -140,22 +149,22 @@ if (...) then
   --- Inits a new `pathfinder` object
   -- @class function
   -- @name pathfinder:new
-  -- @tparam string finderName the name of the `finder` (search algorithm) to be used for further searches.
-  -- Use @{pathfinder:getFinders} to get the full list of available finders.
-  -- @tparam grid grid a `grid` object.
-  -- @tparam[opt] string|int|function walkable the value for walkable nodes on the passed-in map array.
+  -- @tparam grid grid a `grid` object
+  -- @tparam[opt] string finderName the name of the `finder` (search algorithm) to be used for further searches.
+	-- Defaults to `ASTAR` when not given. Use @{pathfinder:getFinders} to get the full list of available finders..
+  -- @tparam[optchain] string|int|function walkable the value for walkable nodes on the passed-in map array.
   -- If this parameter is a function, it should be prototyped as `f(value)`, returning a boolean:
   -- `true` when value matches a *walkable* node, `false` otherwise.
   -- @treturn pathfinder a new `pathfinder` object
-  function Pathfinder:new(finderName, grid, walkable)
+  function Pathfinder:new(grid, finderName, walkable)
     local newPathfinder = {}
     setmetatable(newPathfinder, Pathfinder)
+	  newPathfinder:setGrid(grid)
     newPathfinder:setFinder(finderName)
-    newPathfinder:setGrid(grid)
-    newPathfinder.openList = Heap()
     newPathfinder:setWalkable(walkable)
     newPathfinder:setMode('DIAGONAL')
     newPathfinder:setHeuristic('MANHATTAN')
+    newPathfinder.openList = Heap()
     return newPathfinder
   end
 
@@ -185,7 +194,7 @@ if (...) then
   -- If this parameter is a function, it should be prototyped as `f(value)`, returning a boolean:
   -- `true` when value matches a *walkable* node, `false` otherwise.
   function Pathfinder:setWalkable(walkable)
-    assert(('stringnumberfunction'):match(type(walkable)),
+    assert(('stringintfunctionnil'):match(type(walkable)),
       ('Bad argument #2. Expected \'string\', \'number\' or \'function\', got %s.'):format(type(walkable)))
     self.walkable = walkable
     self.grid.__eval = type(self.walkable) == 'function'
@@ -195,19 +204,25 @@ if (...) then
   --- Gets the `walkable` value or function.
   -- @class function
   -- @name pathfinder:getWalkable
-  -- @treturn value|function the `walkable` previously set
+  -- @treturn string|int|function the `walkable` previously set
   function Pathfinder:getWalkable()
     return self.walkable
   end
 
   --- Sets a finder. The finder refers to the search algorithm used by the `pathfinder` object.
-  -- The default finder is `JPS` (for *Jump Point Search*), which is the fastest available.
-  -- Use @{pathfinder:getFinders} to get the list of available finders.
+  -- The default finder is `ASTAR`. Use @{pathfinder:getFinders} to get the list of available finders.
   -- @class function
   -- @name pathfinder:setFinder
   -- @tparam string finderName the name of the finder to be used for further searches.
   -- @see pathfinder:getFinders
   function Pathfinder:setFinder(finderName)
+		local finderName = finderName
+		if not finderName then
+			if not self.finder then 
+				finderName = 'ASTAR' 
+			else return 
+			end
+		end
     assert(Finders[finderName],'Not a valid finder name!')
     self.finder = finderName
     return self
@@ -305,17 +320,19 @@ if (...) then
   -- @tparam number startY the y-coordinate for the starting location
   -- @tparam number endX the x-coordinate for the goal location
   -- @tparam number endY the y-coordinate for the goal location
+  -- @tparam[opt] bool tunnel Whether or not the pathfinder can tunnel though walls diagonally (not compatible with `Jump Point Search`)
   -- @treturn {node,...} a path (array of `nodes`) when found, otherwise `nil`
   -- @treturn number the path length when found, `0` otherwise
-  function Pathfinder:getPath(startX, startY, endX, endY)
+  function Pathfinder:getPath(startX, startY, endX, endY, tunnel)
+		reset()
     local startNode = self.grid:getNodeAt(startX, startY)
     local endNode = self.grid:getNodeAt(endX, endY)
     assert(startNode, ('Invalid location [%d, %d]'):format(startX, startY))
     assert(endNode and self.grid:isWalkableAt(endX, endY),
       ('Invalid or unreachable location [%d, %d]'):format(endX, endY))
-    local _endNode = Finders[self.finder](self, startNode, endNode, toClear)
-    if _endNode then return
-      traceBackPath(self, _endNode, startNode), lastPathCost
+    local _endNode = Finders[self.finder](self, startNode, endNode, toClear, tunnel)
+    if _endNode then 
+			return traceBackPath(self, _endNode, startNode), lastPathCost
     end
     lastPathCost = 0
     return nil, lastPathCost
