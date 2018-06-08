@@ -1,37 +1,25 @@
---- <strong>The init hook file</strong>.
--- The default way to import Jumper in your project is the following:
--- <ul>
--- <pre class="example">
--- local Pathfinder = require (&quot;jumper.init&quot;)
--- </pre></ul>
---
--- The call to `init.lua` was meant for self-containment purposes. 
--- On some Lua distributions, the package of modules contains the pattern `init.lua`.
--- In this case, to import the library in your project, you can just write the following:
--- <ul>
--- <pre class="example">
--- local Pathfinder = require (&quot;jumper&quot;)
--- </pre></ul>
---
--- Optionnally, you can also add the pattern `init.lua` in your package of modules. 
--- Therefore, the syntax can be shortened:
--- <ul>
--- <pre class="example">
--- package.path = package.path .. (&quot;;.\\\?\\\init.lua&quot;)
--- local Pathfinder = require (&quot;jumper&quot;)
--- </pre></ul>
+--- <strong>`Dijkstra` algorithm</strong>.
+-- Implementation of <a href="http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra</a> search algorithm
 --
 -- @author Roland Yonaba
 -- @copyright 2012-2013
 -- @license <a href="http://www.opensource.org/licenses/mit-license.php">MIT</a>
--- @script init
+-- @script jumper.search.dijkstra
 
 
 
 if (...) then
-  local _path = (...):match('(.)*%.init$') or ''
-  print('_path',_path)
-  return require(_path..'.pathfinder')
+
+  local astar_search = require ((...):gsub('%.dijkstra$','.astar'))
+  -- Dijkstra is similar to aStar, with no heuristic
+  local dijkstraHeuristic = function() return 0 end
+
+  -- Calculates a path.
+  -- Returns the path from location `<startX, startY>` to location `<endX, endY>`.
+  return function (finder, startNode, endNode, toClear)
+    return astar_search(finder, startNode, endNode, toClear, dijkstraHeuristic)
+  end
+
 end
 
 --[[
