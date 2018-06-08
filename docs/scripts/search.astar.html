@@ -32,44 +32,36 @@
 
 
 
+<h2>Scripts</h2>
+<ul>
+  <li><a href="../scripts/init.html">init</a></li>
+  <li><a href="../scripts/pathfinder.html">pathfinder</a></li>
+  <li><strong>search.astar</strong></li>
+  <li><a href="../scripts/search.jps.html">search.jps</a></li>
+</ul>
 <h2>Modules</h2>
 <ul>
   <li><a href="../modules/core.bheap.html">core.bheap</a></li>
   <li><a href="../modules/core.grid.html">core.grid</a></li>
   <li><a href="../modules/core.heuristics.html">core.heuristics</a></li>
-  <li><strong>init</strong></li>
-</ul>
-<h2>Scripts</h2>
-<ul>
-  <li><a href="../scripts/jumper.html">jumper</a></li>
+  <li><a href="../modules/core.node.html">core.node</a></li>
 </ul>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>init</code></h1>
+<h1>Script <code>search.astar</code></h1>
 
-<p><strong>Init file</strong>.</p>
-<p> This file was meant for self-containment purposes.
- On some Lua distributions, the package of modules contains this explicit pattern.
- In this case, you can simply write the following:
- <ul>
- <pre class="example">
- local Jumper = require (&quot;Jumper&quot;)
- </pre></ul>
- Anyway, the default method requires to call explicitly <code>init.lua</code>
- <ul>
- <pre class="example">
- local Jumper = require (&quot;Jumper.init&quot;)
- </pre></ul>
- Optionnally, you can also add the pattern <code>init.lua</code> in your package of modules.
- Therefore, you can shorten the previous syntax
- <ul>
- <pre class="example">
- package.path = package.path .. (&quot;;.\\?\\init.lua&quot;)
- local Jumper = require (&quot;Jumper&quot;)
- </pre></ul></p>
+<p><strong><code>A-star</code> algorithm</strong>.</p>
+<p> This file holds an implementation of <a href="http://en.wikipedia.org/wiki/A-star">A*</a> search algorithm,
+ applied on 2D grid-based maps</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: 2012-2013</li>
+        <li><strong>License</strong>: <a href="http://www.opensource.org/licenses/mit-license.php">MIT</a></li>
+        <li><strong>Author</strong>: Roland Yonaba</li>
+    </ul>
 
 
 

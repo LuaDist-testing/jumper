@@ -47,7 +47,9 @@
 <h2>Scripts</h2>
 <ul>
   <li><a href="../scripts/init.html">init</a></li>
-  <li><a href="../scripts/jumper.html">jumper</a></li>
+  <li><a href="../scripts/pathfinder.html">pathfinder</a></li>
+  <li><a href="../scripts/search.astar.html">search.astar</a></li>
+  <li><a href="../scripts/search.jps.html">search.jps</a></li>
 </ul>
 
 </div>
@@ -92,6 +94,10 @@
 	<tr>
 	<td class="name" nowrap><a href="#heap:pop">heap:pop&nbsp;()</a></td>
 	<td class="summary">Pops from the <a href="../modules/core.bheap.html#heap">heap</a> .</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#heap:heapify">heap:heapify&nbsp;([item])</a></td>
+	<td class="summary">Restores the <a href="../modules/core.bheap.html#heap">heap</a>  property.</td>
 	</tr>
 </table>
 <h2><a href="#Tables">Tables</a></h2>
@@ -175,6 +181,28 @@
           <span class="types"><span class="type">object</span></span>
         an object stored in the heap
     </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "heap:heapify"></a>
+    <strong>heap:heapify&nbsp;([item])</strong>
+    </dt>
+    <dd>
+    Restores the <a href="../modules/core.bheap.html#heap">heap</a>  property.
+ Reorders the <a href="../modules/core.bheap.html#heap">heap</a>  with respect to the comparison function being used.
+ When given arg <code>item</code>, will sort that very item in the <a href="../modules/core.bheap.html#heap">heap</a> .
+ Otherwise, the whole <a href="../modules/core.bheap.html#heap">heap</a>  will be sorted.
+
+    <h3>Parameters:</h3>
+    <ul>
+      <li><span class="parameter">item</span>
+        <span class="types"><span class="type">object</span></span>
+       the modified object</li>
+    </ul>
+
 
 
 
